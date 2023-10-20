@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 import api from "../utils/api";
+import Card from "./Card";
 
 function Main({
   onEditAvatar,
@@ -14,6 +15,7 @@ function Main({
   const [userName, setUserName] = useState("");
   const [userDescription, setUserDescription] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     api.getUserInfo()
@@ -21,6 +23,12 @@ function Main({
         setUserName(userInfo.name);
         setUserDescription(userInfo.about);
         setUserAvatar(userInfo.avatar);
+      })
+      .catch((err) => console.log(err));
+
+      api.getInitialCards()
+      .then((initialCards) => {
+        setCards(initialCards);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -53,6 +61,13 @@ function Main({
           onClick={onAddPlace}
         ></button>
       </section>
+
+      <section className="cards">
+        {cards.map((card) => (
+          <Card key={card._id} card={card} /> 
+        ))}
+      </section>
+
 
       <PopupWithForm
         name="profile"
