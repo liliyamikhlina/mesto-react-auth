@@ -1,5 +1,3 @@
-import React from "react";
-
 function Api(data) {
   const _baseUrl = data.baseUrl;
   const _headers = data.headers;
@@ -104,4 +102,12 @@ function Api(data) {
   };
 }
 
-export default Api;
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-71',
+  headers: {
+      authorization: '9c1cf152-056e-4431-8276-6546daba52e3',
+      'Content-Type': 'application/json'
+  }
+});
+
+export default api;

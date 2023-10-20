@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import kusto from "../images/kusto.jpg";
 import PopupWithForm from "./PopupWithForm";
+import api from "../utils/api";
 
 function Main({
   onEditAvatar,
@@ -11,7 +11,19 @@ function Main({
   isAddPlacePopupOpen,
   onClose,
 }) {
+  const [userName, setUserName] = useState("");
+  const [userDescription, setUserDescription] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
 
+  useEffect(() => {
+    api.getUserInfo()
+      .then((userInfo) => {
+        setUserName(userInfo.name);
+        setUserDescription(userInfo.about);
+        setUserAvatar(userInfo.avatar);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <main className="content">
@@ -21,11 +33,11 @@ function Main({
             className="profile__avatar-button"
             onClick={onEditAvatar}
           ></button>
-          <img src={kusto} alt="Жак-Ив Кусто" className="profile__avatar" />
+          <img src={userAvatar} alt="Жак-Ив Кусто" className="profile__avatar" />
         </div>
         <div className="profile__info">
           <div className="profile__box">
-            <h1 className="profile__name">Жак-Ив Кусто</h1>
+            <h1 className="profile__name">{userName}</h1>
             <button
               className="profile__edit-button"
               type="button"
@@ -33,7 +45,7 @@ function Main({
               onClick={onEditProfile}
             ></button>
           </div>
-          <p className="profile__job">Исследователь океана</p>
+          <p className="profile__job">{userDescription}</p>
         </div>
         <button
           className="profile__add-button"
