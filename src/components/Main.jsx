@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 import api from "../utils/api";
 import Card from "./Card";
+import ImagePopup from "./ImagePopup";
 
 function Main({
   onEditAvatar,
@@ -11,6 +12,8 @@ function Main({
   isEditProfilePopupOpen,
   isAddPlacePopupOpen,
   onClose,
+  selectedCard,
+  handleCardClick,
 }) {
   const [userName, setUserName] = useState("");
   const [userDescription, setUserDescription] = useState("");
@@ -18,7 +21,8 @@ function Main({
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api.getUserInfo()
+    api
+      .getUserInfo()
       .then((userInfo) => {
         setUserName(userInfo.name);
         setUserDescription(userInfo.about);
@@ -26,7 +30,8 @@ function Main({
       })
       .catch((err) => console.log(err));
 
-      api.getInitialCards()
+    api
+      .getInitialCards()
       .then((initialCards) => {
         setCards(initialCards);
       })
@@ -41,7 +46,11 @@ function Main({
             className="profile__avatar-button"
             onClick={onEditAvatar}
           ></button>
-          <img src={userAvatar} alt="Жак-Ив Кусто" className="profile__avatar" />
+          <img
+            src={userAvatar}
+            alt="Жак-Ив Кусто"
+            className="profile__avatar"
+          />
         </div>
         <div className="profile__info">
           <div className="profile__box">
@@ -62,12 +71,15 @@ function Main({
         ></button>
       </section>
 
-      <section className="cards">
+      <section className="elements">
         {cards.map((card) => (
-          <Card key={card._id} card={card} /> 
+          <Card
+            key={card._id}
+            card={card}
+            onCardClick={handleCardClick}
+          />
         ))}
       </section>
-
 
       <PopupWithForm
         name="profile"
@@ -88,6 +100,7 @@ function Main({
         onClose={onClose}
       />
 
+      <ImagePopup card={selectedCard} onClose={onClose} />
     </main>
   );
 }
