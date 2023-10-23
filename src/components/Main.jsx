@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import PopupWithForm from "./PopupWithForm";
 import api from "../utils/api";
 import Card from "./Card";
-import ImagePopup from "./ImagePopup";
 
 function Main({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
-  isEditAvatarPopupOpen,
-  isEditProfilePopupOpen,
-  isAddPlacePopupOpen,
-  onClose,
-  selectedCard,
   handleCardClick,
 }) {
   const [userName, setUserName] = useState("");
@@ -80,27 +73,6 @@ function Main({
           />
         ))}
       </section>
-
-      <PopupWithForm
-        name="profile"
-        title="Редактировать профиль"
-        isOpen={isEditProfilePopupOpen}
-        onClose={onClose}
-      />
-      <PopupWithForm
-        name="card"
-        title="Новое Место"
-        isOpen={isAddPlacePopupOpen}
-        onClose={onClose}
-      />
-      <PopupWithForm
-        name="avatar"
-        title="Обновить аватар"
-        isOpen={isEditAvatarPopupOpen}
-        onClose={onClose}
-      />
-
-      <ImagePopup card={selectedCard} onClose={onClose} />
     </main>
   );
 }

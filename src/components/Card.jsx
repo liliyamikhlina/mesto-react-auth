@@ -9,7 +9,7 @@ function Card(props) {
   return (
     <div className="card" onClick={handleClick}>
       <button className="card__trash" type="button"></button>
-      <img className="card__image" src={props.card.link} alt="."></img>
+      <img className="card__image" src={props.card.link} alt={props.card.name}></img>
       <div className="card__box">
         <h2 className="card__title">{props.card.name}</h2>
         <div className="card__like-box">
