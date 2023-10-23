@@ -42,11 +42,6 @@ function App() {
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
-          onClose={closeAllPopups}
-          isEditAvatarPopupOpen={isEditAvatarPopupOpen}
-          isEditProfilePopupOpen={isEditProfilePopupOpen}
-          isAddPlacePopupOpen={isAddPlacePopupOpen}
-          selectedCard={selectedCard}
           handleCardClick={handleCardClick}
         />
         <Footer />
