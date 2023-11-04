@@ -22,6 +22,18 @@ function Main({
       .catch((err) => console.log(err));
   }, []);
 
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const toggleCardLike = isLiked ? api.dislikeCard : api.likeCard;
+    toggleCardLike(card._id)
+    .then((newCard) => {
+      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+      setCards(newCards);
+    })
+    .catch((err) => console.log(err))
+  }
+
+  
   return (
     <main className="content">
       <section className="profile">
@@ -62,6 +74,7 @@ function Main({
             card={card}
             onCardClick={handleCardClick}
             onDeleteClick={handleDeleteClick}
+            onCardLike={handleCardLike}
           />
         ))}
       </section>
