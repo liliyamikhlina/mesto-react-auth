@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import api from "../utils/api";
 import Card from "./Card";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function Main({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
   handleCardClick,
+  handleDeleteClick,
 }) {
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
+  const currentUser = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userInfo) => {
-        setUserName(userInfo.name);
-        setUserDescription(userInfo.about);
-        setUserAvatar(userInfo.avatar);
-      })
-      .catch((err) => console.log(err));
-
     api
       .getInitialCards()
       .then((initialCards) => {
@@ -40,14 +31,14 @@ function Main({
             onClick={onEditAvatar}
           ></button>
           <img
-            src={userAvatar}
-            alt="Жак-Ив Кусто"
+            src={currentUser.avatar}
+            alt={currentUser.name}
             className="profile__avatar"
           />
         </div>
         <div className="profile__info">
           <div className="profile__box">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button
               className="profile__edit-button"
               type="button"
@@ -55,7 +46,7 @@ function Main({
               onClick={onEditProfile}
             ></button>
           </div>
-          <p className="profile__job">{userDescription}</p>
+          <p className="profile__job">{currentUser.about}</p>
         </div>
         <button
           className="profile__add-button"
@@ -70,6 +61,7 @@ function Main({
             key={card._id}
             card={card}
             onCardClick={handleCardClick}
+            onDeleteClick={handleDeleteClick}
           />
         ))}
       </section>
