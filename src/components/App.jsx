@@ -6,6 +6,7 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -41,6 +42,16 @@ function App() {
     setSelectedCard(null);
   };
 
+  const handleUpdateUser = (userInfo) => {
+    api
+      .editProfile(userInfo)
+      .then((userInfo) => {
+        setCurrentUser(userInfo);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     api
       .getUserInfo()
@@ -64,41 +75,13 @@ function App() {
           />
           <Footer />
 
-          <PopupWithForm
-            name="profile"
-            title="Редактировать профиль"
+          <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
-            children={
-              <>
-                <input
-                  className="popup__input"
-                  id="input-name"
-                  type="text"
-                  name="name"
-                  placeholder="Ваше имя"
-                  minLength="2"
-                  maxLength="40"
-                  required
-                ></input>
-                <span className="popup__input-error input-name-error"></span>
-                <input
-                  className="popup__input"
-                  id="input-job"
-                  type="text"
-                  name="job"
-                  placeholder="О себе"
-                  minLength="2"
-                  maxLength="200"
-                  required
-                ></input>
-                <span className="popup__input-error input-job-error"></span>{" "}
-              </>
-            }
-            buttonLabel="Сохранить"
+            onUpdateUser={handleUpdateUser}
           />
 
-          <PopupWithForm
+          {/* <PopupWithForm
             name="card"
             title="Новое Место"
             isOpen={isAddPlacePopupOpen}
@@ -128,9 +111,9 @@ function App() {
               </>
             }
             buttonLabel="Создать"
-          />
+          /> */}
 
-          <PopupWithForm
+          {/* <PopupWithForm
             name="avatar"
             title="Обновить аватар"
             isOpen={isEditAvatarPopupOpen}
@@ -149,7 +132,7 @@ function App() {
               </>
             }
             buttonLabel="Сохранить"
-          />
+          /> */}
 
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         </div>

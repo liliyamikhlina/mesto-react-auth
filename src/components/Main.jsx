@@ -8,7 +8,6 @@ function Main({
   onEditProfile,
   onAddPlace,
   handleCardClick,
-  handleDeleteClick,
 }) {
   const currentUser = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
