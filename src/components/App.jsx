@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -45,11 +45,26 @@ function App() {
   const handleUpdateUser = (userInfo) => {
     api
       .editProfile(userInfo)
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
-        closeAllPopups();
+      .then((updatedUserInfo) => {
+        setCurrentUser(updatedUserInfo);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        closeAllPopups();
+      });
+  };
+
+  const handleUpdateAvatar = (userInfo) => {
+    console.log(userInfo);
+    api
+      .changeAvatar(userInfo)
+      .then((updatedUserInfo) => {
+        setCurrentUser(updatedUserInfo);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        closeAllPopups();
+      });
   };
 
   useEffect(() => {
@@ -74,13 +89,11 @@ function App() {
             handleDeleteClick={handleDeleteClick}
           />
           <Footer />
-
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
           />
-
           {/* <PopupWithForm
             name="card"
             title="Новое Место"
@@ -113,28 +126,14 @@ function App() {
             buttonLabel="Создать"
           /> */}
 
-          {/* <PopupWithForm
-            name="avatar"
-            title="Обновить аватар"
+          <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
-            children={
-              <>
-                <input
-                  className="popup__input"
-                  id="input-avatar"
-                  type="url"
-                  name="link"
-                  placeholder="Ссылка на картинку"
-                  required
-                ></input>
-                <span className="popup__input-error input-avatar-error"></span>
-              </>
-            }
-            buttonLabel="Сохранить"
-          /> */}
-
+            onUpdateAvatar={handleUpdateAvatar}
+          />
+          
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+
         </div>
       </div>
     </CurrentUserContext.Provider>
