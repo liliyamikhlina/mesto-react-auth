@@ -47,7 +47,7 @@ function Api(data) {
       method: "POST",
       headers: _headers,
       body: JSON.stringify({
-        name: data.name,
+        name: data.place,
         link: data.link,
       }),
     }).then((res) => {
