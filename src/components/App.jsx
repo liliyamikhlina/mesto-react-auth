@@ -90,7 +90,6 @@ function App() {
   };
 
   const handleAddPlaceSubmit = (newCard) => {
-    console.log(newCard);
     api.addCard(newCard)
     .then((newCard) => {
       setCards([...cards, newCard]);
