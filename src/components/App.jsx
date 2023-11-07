@@ -33,10 +33,6 @@ function App() {
     setSelectedCard(card);
   };
 
-  const handleDeleteClick = () => {
-    api.deleteCard(currentUser.id);
-  };
-
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -49,11 +45,9 @@ function App() {
       .editProfile(userInfo)
       .then((updatedUserInfo) => {
         setCurrentUser(updatedUserInfo);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
         closeAllPopups();
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleUpdateAvatar = (userInfo) => {
@@ -61,11 +55,9 @@ function App() {
       .changeAvatar(userInfo)
       .then((updatedUserInfo) => {
         setCurrentUser(updatedUserInfo);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
         closeAllPopups();
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleCardLike = (card) => {
@@ -90,14 +82,13 @@ function App() {
   };
 
   const handleAddPlaceSubmit = (newCard) => {
-    api.addCard(newCard)
-    .then((newCard) => {
-      setCards([...cards, newCard]);
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      closeAllPopups();
-    });
+    api
+      .addCard(newCard)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -128,9 +119,7 @@ function App() {
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             handleCardClick={handleCardClick}
-            handleDeleteClick={handleDeleteClick}
             cards={cards}
-            setCards={setCards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
           />

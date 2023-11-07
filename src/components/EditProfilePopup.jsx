@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
@@ -16,17 +16,19 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   }
 
   function handleSubmit(e) {
-      e.preventDefault();
-      onUpdateUser({
-        name,
-        job
-      });
-    }
+    e.preventDefault();
+    onUpdateUser({
+      name,
+      job,
+    });
+  }
 
-    React.useEffect(() => {
+  useEffect(() => {
+    if (isOpen) {
       setName(currentUser.name);
       setJob(currentUser.about);
-    }, [currentUser]);
+    }
+  }, [isOpen, currentUser]);
 
   return (
     <PopupWithForm
@@ -36,37 +38,34 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonLabel="Сохранить"
-      children={
-        <>
-          <input
-            className="popup__input"
-            id="input-name"
-            type="text"
-            name="name"
-            placeholder="Ваше имя"
-            minLength="2"
-            maxLength="40"
-            required
-            value={name !== undefined ? name : ''}
-            onChange={handleNameChange}
-          ></input>
-          <span className="popup__input-error input-name-error"></span>
-          <input
-            className="popup__input"
-            id="input-job"
-            type="text"
-            name="job"
-            placeholder="О себе"
-            minLength="2"
-            maxLength="200"
-            required
-            value={job !== undefined ? job : ''}
-            onChange={handleJobChange}
-          ></input>
-          <span className="popup__input-error input-job-error"></span>{" "}
-        </>
-      }
-    ></PopupWithForm>
+    >
+      <input
+        className="popup__input"
+        id="input-name"
+        type="text"
+        name="name"
+        placeholder="Ваше имя"
+        minLength="2"
+        maxLength="40"
+        required
+        value={name !== undefined ? name : ""}
+        onChange={handleNameChange}
+      ></input>
+      <span className="popup__input-error input-name-error"></span>
+      <input
+        className="popup__input"
+        id="input-job"
+        type="text"
+        name="job"
+        placeholder="О себе"
+        minLength="2"
+        maxLength="200"
+        required
+        value={job !== undefined ? job : ""}
+        onChange={handleJobChange}
+      ></input>
+      <span className="popup__input-error input-job-error"></span>{" "}
+    </PopupWithForm>
   );
 }
 

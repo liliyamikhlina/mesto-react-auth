@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
@@ -11,6 +11,12 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     });
   }
 
+  useEffect(() => {
+    if (isOpen) {
+      inputRef.current.value = "";
+    }
+  }, [isOpen]);
+
   return (
     <PopupWithForm
       name="avatar"
@@ -18,22 +24,19 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      children={
-        <>
-          <input
-            ref={inputRef}
-            className="popup__input"
-            id="input-avatar"
-            type="url"
-            name="link"
-            placeholder="Ссылка на картинку"
-            required
-          ></input>
-          <span className="popup__input-error input-avatar-error"></span>
-        </>
-      }
       buttonLabel="Сохранить"
-    />
+    >
+      <input
+        ref={inputRef}
+        className="popup__input"
+        id="input-avatar"
+        type="url"
+        name="link"
+        placeholder="Ссылка на картинку"
+        required
+      ></input>
+      <span className="popup__input-error input-avatar-error"></span>
+    </PopupWithForm>
   );
 }
 
