@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import authApi from "../utils/authApi";
 import { Link, useNavigate } from "react-router-dom";
+import InfoTooltip from "./InfoTooltip";
+import success from "../images/success.png";
+import fail from "../images/fail.png";
 
 function Register() {
   const [formValue, setFormValue] = useState({
@@ -8,15 +11,17 @@ function Register() {
     password: '',
   });
 
+  const [isTultipOpen, setTultipOpen] = useState(false);
+  const [registrationResult, setRegistrationResult] = useState(null);
+
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setFormValue({
       ...formValue,
       [name]: value
     });
   }
-
 
   const navigate = useNavigate();
 
@@ -25,11 +30,24 @@ function Register() {
     authApi
       .registerUser(formValue.email, formValue.password)
       .then(() => {
-        navigate('/signin');
+        setTultipOpen(true);
+        setRegistrationResult({ result: success, text: "Вы успешно зарегистрировались!" });
+        setTimeout(() => {
+          navigate('/sign-in');
+        }, 2000);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setTultipOpen(true);
+        setRegistrationResult({ result: fail, text: "Что-то пошло не так! Попробуйте ещё раз." });
+        console.log(err);
+      });
   };
 
+  const handleTooltipClose = () => {
+    setTultipOpen(false);
+    setRegistrationResult(null);
+  };
+  
   return (
     <div className="auth">
       <p className="auth__title">Регистрация</p>
@@ -59,6 +77,15 @@ function Register() {
         </button>
       </form>
       <Link to="/sign-in" className="auth__link">Уже зарегистрированы? Войти</Link>
+
+     {registrationResult && (
+        <InfoTooltip
+          result={registrationResult.result}
+          text={registrationResult.text}
+          isOpen={isTultipOpen}
+          onClose={handleTooltipClose}
+        />
+      )}
     </div>
   );
 }

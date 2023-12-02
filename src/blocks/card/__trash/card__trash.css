@@ -10,8 +10,10 @@
     right: 20px;
     border: none;
     outline: none;
+    opacity: 1;
 }
 
 .card__trash:hover {
+    opacity: 0.6;
     cursor: pointer;
 }

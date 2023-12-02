@@ -27,7 +27,6 @@ function Login({ onLogin }) {
     authApi
       .loginUser(formValue.email, formValue.password)
       .then((data) => {
-        console.log(data.token);
         if (data.token) {
           setFormValue({ username: "", password: "" });
         }

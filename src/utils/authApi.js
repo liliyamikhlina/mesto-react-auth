@@ -11,18 +11,7 @@ function AuthApi() {
       return Promise.reject(`Ошибка: ${res.status}`);
     }
   };
-
-  const checkToken = (token) => {
-    return fetch(`${baseUrl}/users/me`, {
-      method: "GET",
-      headers: {
-        ...headers,
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  };
-
-
+  
   const registerUser = (email, password) => {
     return fetch(`${baseUrl}/signup`, {
       method: "POST",
@@ -39,12 +28,28 @@ function AuthApi() {
       headers: headers,
       body: JSON.stringify({ email, password }),
     })
-    .then((res) => {
-      return checkResponseStatus(res);
-    })
+      .then((res) => {
+        return checkResponseStatus(res);
+      })
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        return data;
+      });
   };
 
-  return { registerUser, loginUser, checkToken };
+  const getToken = (token) => {
+    return fetch(`${baseUrl}/users/me`, {
+      method: "GET",
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      return checkResponseStatus(res);
+    });
+  };
+
+  return { registerUser, loginUser, getToken };
 }
 
 const authApi = new AuthApi();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -12,9 +12,6 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import Register from "./Register";
 import Login from "./Login";
-// import InfoTooltip from "./InfoTooltip";
-// import success from "../images/success.png";
-// import fail from "../images/fail.png";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
@@ -25,7 +22,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
+
+  const navigate = useNavigate();
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -105,6 +104,28 @@ function App() {
     setIsLoggedIn(true);
   };
 
+  function signOut() {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  }
+
+  const handleTokenCheck = () => {
+    if (localStorage.getItem("token")) {
+      const jwt = localStorage.getItem("token")
+      authApi
+        .getToken(jwt)
+        .then((res) => {
+          if (res) {
+            handleLogin();
+            setEmail(res.data.email);
+            navigate("/", { replace: true });
+          } else {
+            setIsLoggedIn(false);
+          }
+        })
+    }
+  }
+
   useEffect(() => {
     api
       .getUserInfo()
@@ -123,18 +144,15 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  // useEffect(() => {
-  //   const jwt = authApi.getToken();
-  //   if (jwt) {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    handleTokenCheck();
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="page">
-          <Header email={email} />
+          <Header email={email} onSignOut={signOut}/>
           <Routes>
             <Route
               path="/"
@@ -149,8 +167,8 @@ function App() {
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
                   element={Main}
-                  />
-                  }
+                />
+              }
             />
 
             <Route path="/sign-up" element={<Register />} />
@@ -169,9 +187,6 @@ function App() {
             />
           </Routes>
           <Footer isLoggedIn={isLoggedIn} />
-
-          {/* <InfoTooltip result={success} text="Вы успешно зарегистрировались!"/> */}
-          {/* <InfoTooltip result={fail} text="Что-то пошло не так! Попробуйте ещё раз."/> */}
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
