@@ -1,8 +1,8 @@
 import React from "react";
 
-function Footer() {
+function Footer({ isLoggedIn }) {
   return (
-    <footer className="footer">
+    <footer className={`footer ${isLoggedIn ? "footer_active" : ""}`}>
       <p className="footer__copyright">
         &copy; {new Date().getFullYear()} Mesto Russia
       </p>

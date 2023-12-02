@@ -1,17 +1,31 @@
 import React, { useState } from "react";
 import authApi from "../utils/authApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formValue, setFormValue] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+  }
+
+
+  const navigate = useNavigate();
 
   const handleRegister = (e) => {
-    e.preventDefault(e);
+    e.preventDefault();
     authApi
-      .registerUser({ email, password })
-      .then((data) => {
-        console.log(data);
+      .registerUser(formValue.email, formValue.password)
+      .then(() => {
+        navigate('/signin');
       })
       .catch((err) => console.log(err));
   };
@@ -28,8 +42,8 @@ function Register() {
           minLength="2"
           maxLength="40"
           required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formValue.email}
+          onChange={handleChange}
         ></input>
         <input
           className="auth__input"
@@ -37,14 +51,14 @@ function Register() {
           name="password"
           placeholder="Пароль"
           required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formValue.password}
+          onChange={handleChange}
         ></input>
         <button className="auth__button" type="submit">
           Зарегистрироваться
         </button>
       </form>
-      <Link className="auth__link">Уже зарегистрированы? Войти</Link>
+      <Link to="/sign-in" className="auth__link">Уже зарегистрированы? Войти</Link>
     </div>
   );
 }

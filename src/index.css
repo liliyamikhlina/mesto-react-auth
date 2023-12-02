@@ -28,6 +28,7 @@
 @import url(./blocks/element/__button/_active/element__button.css);
 
 @import url(./blocks/footer/footer.css);
+@import url(./blocks/footer/_active/footer_active.css);
 @import url(./blocks/footer/__copyright/footer__copyright.css);
 
 @import url(./blocks/popup/popup.css);

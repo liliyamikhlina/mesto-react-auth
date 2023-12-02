@@ -25,6 +25,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -100,6 +101,10 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
   useEffect(() => {
     api
       .getUserInfo()
@@ -118,45 +123,39 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    const token = authApi.getToken();
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const jwt = authApi.getToken();
+  //   if (jwt) {
+  //     setIsLoggedIn(true);
+  //   }
+  // }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="page">
-          <Header isLoggedIn={isLoggedIn}/>
+          <Header email={email} />
           <Routes>
             <Route
               path="/"
               element={
                 <ProtectedRoute
-                  loggedIn={isLoggedIn}
-                  element={
-                    <>
-                      <Main
-                        onEditAvatar={handleEditAvatarClick}
-                        onEditProfile={handleEditProfileClick}
-                        onAddPlace={handleAddPlaceClick}
-                        handleCardClick={handleCardClick}
-                        cards={cards}
-                        onCardLike={handleCardLike}
-                        onCardDelete={handleCardDelete}
-                      />
-                      <Footer />
-                    </>
+                  isLoggedIn={isLoggedIn}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  handleCardClick={handleCardClick}
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  element={Main}
+                  />
                   }
-                />
-              }
             />
 
             <Route path="/sign-up" element={<Register />} />
 
-            <Route path="/sign-in" element={<Login />} />
+            <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
 
             <Route
               path="*"
@@ -169,6 +168,7 @@ function App() {
               }
             />
           </Routes>
+          <Footer isLoggedIn={isLoggedIn} />
 
           {/* <InfoTooltip result={success} text="Вы успешно зарегистрировались!"/> */}
           {/* <InfoTooltip result={fail} text="Что-то пошло не так! Попробуйте ещё раз."/> */}

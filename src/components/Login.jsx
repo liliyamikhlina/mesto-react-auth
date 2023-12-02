@@ -1,16 +1,38 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import authApi from "../utils/authApi";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login({ onLogin }) {
+  const [formValue, setFormValue] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleLogin = (e) => {
-    e.preventDefault(e);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formValue.email || !formValue.password) {
+      return;
+    }
     authApi
-      .loginUser({ email, password })
+      .loginUser(formValue.email, formValue.password)
       .then((data) => {
         console.log(data.token);
+        if (data.token) {
+          setFormValue({ username: "", password: "" });
+        }
+        onLogin();
+        navigate('/', { replace: true });
       })
       .catch((err) => console.log(err));
   };
@@ -18,7 +40,7 @@ function Login() {
   return (
     <div className="auth">
       <p className="auth__title">Вход</p>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSubmit}>
         <input
           className="auth__input"
           type="email"
@@ -27,8 +49,8 @@ function Login() {
           minLength="2"
           maxLength="40"
           required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formValue.email}
+          onChange={handleChange}
         ></input>
         <input
           className="auth__input"
@@ -36,8 +58,8 @@ function Login() {
           name="password"
           placeholder="Пароль"
           required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formValue.password}
+          onChange={handleChange}
         ></input>
         <button className="auth__button" type="submit">
           Войти

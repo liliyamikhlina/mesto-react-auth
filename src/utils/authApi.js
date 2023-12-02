@@ -1,6 +1,8 @@
-function AuthApi(data) {
-  const _baseUrl = data.baseUrl;
-  const _headers = data.headers;
+function AuthApi() {
+  const baseUrl = "https://auth.nomoreparties.co";
+  const headers = {
+    "Content-Type": "application/json",
+  };
 
   const checkResponseStatus = (res) => {
     if (res.ok) {
@@ -10,54 +12,41 @@ function AuthApi(data) {
     }
   };
 
-  const getToken = () => {
-    return localStorage.getItem("token");
+  const checkToken = (token) => {
+    return fetch(`${baseUrl}/users/me`, {
+      method: "GET",
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
   };
 
-  const saveToken = (token) => {
-    localStorage.setItem("token", token);
-  };
 
-  const registerUser = (data) => {
-    return fetch(`${_baseUrl}/signup`, {
+  const registerUser = (email, password) => {
+    return fetch(`${baseUrl}/signup`, {
       method: "POST",
-      headers: _headers,
-      body: JSON.stringify({
-        email: data.email,
-        password: data.password,
-      }),
-    })
-      .then(checkResponseStatus)
-      .then((data) => {
-        saveToken(data.token);
-        return data;
-      });
+      headers: headers,
+      body: JSON.stringify({ email, password }),
+    }).then((res) => {
+      return checkResponseStatus(res);
+    });
   };
 
-  const loginUser = (data) => {
-    return fetch(`${_baseUrl}/signin`, {
+  const loginUser = (email, password) => {
+    return fetch(`${baseUrl}/signin`, {
       method: "POST",
-      headers: _headers,
-      body: JSON.stringify({
-        email: data.email,
-        password: data.password,
-      }),
+      headers: headers,
+      body: JSON.stringify({ email, password }),
     })
-    .then(checkResponseStatus)
-    .then((data) => {
-        saveToken(data.token);
-        return data;
-      });
+    .then((res) => {
+      return checkResponseStatus(res);
+    })
   };
 
-  return { registerUser, loginUser, getToken, saveToken };
+  return { registerUser, loginUser, checkToken };
 }
 
-const authApi = new AuthApi({
-  baseUrl: "https://auth.nomoreparties.co",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const authApi = new AuthApi();
 
 export default authApi;
