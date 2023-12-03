@@ -30,7 +30,7 @@ function Login({ onLogin }) {
         if (data.token) {
           setFormValue({ username: "", password: "" });
         }
-        onLogin();
+        onLogin(formValue.email);
         navigate('/', { replace: true });
       })
       .catch((err) => console.log(err));

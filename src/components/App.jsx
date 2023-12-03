@@ -100,7 +100,8 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-  const handleLogin = () => {
+  const handleLogin = (email) => {
+    setEmail(email);
     setIsLoggedIn(true);
   };
 
@@ -116,7 +117,7 @@ function App() {
         .getToken(jwt)
         .then((res) => {
           if (res) {
-            handleLogin();
+            setIsLoggedIn(true);
             setEmail(res.data.email);
             navigate("/", { replace: true });
           } else {
@@ -146,7 +147,7 @@ function App() {
 
   useEffect(() => {
     handleTokenCheck();
-  }, []);
+  });
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
