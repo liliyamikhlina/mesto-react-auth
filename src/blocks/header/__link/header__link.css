@@ -15,10 +15,10 @@
     cursor: pointer;
 }
 
-@media (max-width: 880px) {
+/* @media (max-width: 880px) {
     .header__link {
         font-size: 14px;
         line-height: normal;
         margin: 34px 0 30px;
     }
-}
+} */
