@@ -25,4 +25,4 @@
 * React
 
 
-[Ссылка на проект](https://liliyamikhlina.github.io/mesto-react-auth/)
+[Ссылка на проект](https://liliyamikhlina.github.io/react-mesto-auth/)
