@@ -11,7 +11,7 @@ function Register() {
     password: '',
   });
 
-  const [isTultipOpen, setTultipOpen] = useState(false);
+  const [isTooltipOpen, setTooltipOpen] = useState(false);
   const [registrationResult, setRegistrationResult] = useState(null);
 
   const handleChange = (e) => {
@@ -30,21 +30,21 @@ function Register() {
     authApi
       .registerUser(formValue.email, formValue.password)
       .then(() => {
-        setTultipOpen(true);
+        setTooltipOpen(true);
         setRegistrationResult({ result: success, text: "Вы успешно зарегистрировались!" });
         setTimeout(() => {
           navigate('/sign-in');
         }, 2000);
       })
       .catch((err) => {
-        setTultipOpen(true);
+        setTooltipOpen(true);
         setRegistrationResult({ result: fail, text: "Что-то пошло не так! Попробуйте ещё раз." });
         console.log(err);
       });
   };
 
   const handleTooltipClose = () => {
-    setTultipOpen(false);
+    setTooltipOpen(false);
     setRegistrationResult(null);
   };
   
@@ -82,7 +82,7 @@ function Register() {
         <InfoTooltip
           result={registrationResult.result}
           text={registrationResult.text}
-          isOpen={isTultipOpen}
+          isOpen={isTooltipOpen}
           onClose={handleTooltipClose}
         />
       )}

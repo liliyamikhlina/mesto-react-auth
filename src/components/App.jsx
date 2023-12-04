@@ -106,13 +106,13 @@ function App() {
   };
 
   function signOut() {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
   }
 
   const handleTokenCheck = () => {
     if (localStorage.getItem("token")) {
-      const jwt = localStorage.getItem("token")
+      const jwt = localStorage.getItem("token");
       authApi
         .getToken(jwt)
         .then((res) => {
@@ -124,8 +124,9 @@ function App() {
             setIsLoggedIn(false);
           }
         })
+        .catch((err) => console.log(err));
     }
-  }
+  };
 
   useEffect(() => {
     api
@@ -147,13 +148,13 @@ function App() {
 
   useEffect(() => {
     handleTokenCheck();
-  });
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="page">
-          <Header email={email} onSignOut={signOut}/>
+          <Header email={email} onSignOut={signOut} />
           <Routes>
             <Route
               path="/"
