@@ -34,8 +34,8 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         name="link"
         placeholder="Ссылка на картинку"
         required
-      ></input>
-      <span className="popup__input-error input-avatar-error"></span>
+      />
+      <span className="popup__input-error input-avatar-error"/>
     </PopupWithForm>
   );
 }

@@ -50,7 +50,7 @@ function Login({ onLogin }) {
           required
           value={formValue.email}
           onChange={handleChange}
-        ></input>
+        />
         <input
           className="auth__input"
           type="password"
@@ -59,7 +59,7 @@ function Login({ onLogin }) {
           required
           value={formValue.password}
           onChange={handleChange}
-        ></input>
+        />
         <button className="auth__button" type="submit">
           Войти
         </button>

@@ -30,17 +30,18 @@ function Register() {
     authApi
       .registerUser(formValue.email, formValue.password)
       .then(() => {
-        setTooltipOpen(true);
         setRegistrationResult({ result: success, text: "Вы успешно зарегистрировались!" });
         setTimeout(() => {
           navigate('/sign-in');
         }, 2000);
       })
       .catch((err) => {
-        setTooltipOpen(true);
         setRegistrationResult({ result: fail, text: "Что-то пошло не так! Попробуйте ещё раз." });
         console.log(err);
-      });
+      })
+      .finally(() => {
+        setTooltipOpen(true);
+      })
   };
 
   const handleTooltipClose = () => {
@@ -62,7 +63,7 @@ function Register() {
           required
           value={formValue.email}
           onChange={handleChange}
-        ></input>
+        />
         <input
           className="auth__input"
           type="password"
@@ -70,8 +71,8 @@ function Register() {
           placeholder="Пароль"
           required
           value={formValue.password}
-          onChange={handleChange}
-        ></input>
+          onChange={handleChange} 
+        />
         <button className="auth__button" type="submit">
           Зарегистрироваться
         </button>

@@ -17,10 +17,7 @@ function Main({
     <main className="content">
       <section className="profile">
         <div className="profile__avatar-box">
-          <button
-            className="profile__avatar-button"
-            onClick={onEditAvatar}
-          ></button>
+          <button className="profile__avatar-button" onClick={onEditAvatar} />
           <img
             src={currentUser.avatar}
             alt={currentUser.name}
@@ -35,7 +32,7 @@ function Main({
               type="button"
               aria-label="Изменить профиль"
               onClick={onEditProfile}
-            ></button>
+            />
           </div>
           <p className="profile__job">{currentUser.about}</p>
         </div>
@@ -43,20 +40,19 @@ function Main({
           className="profile__add-button"
           type="button"
           onClick={onAddPlace}
-        ></button>
+        />
       </section>
 
       <section className="elements">
-        {cards
-          .map((card) => (
-            <Card
-              key={card._id}
-              card={card}
-              onCardClick={handleCardClick}
-              onDeleteClick={onCardDelete}
-              onCardLike={onCardLike}
-            />
-          ))}
+        {cards.map((card) => (
+          <Card
+            key={card._id}
+            card={card}
+            onCardClick={handleCardClick}
+            onDeleteClick={onCardDelete}
+            onCardLike={onCardLike}
+          />
+        ))}
       </section>
     </main>
   );

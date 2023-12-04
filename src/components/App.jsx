@@ -84,8 +84,7 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        const newCards = cards.filter((c) => c._id !== card._id);
-        setCards(newCards);
+         setCards((state) => state.filter((item) => item._id !== card._id));
       })
       .catch((err) => console.log(err));
   };
@@ -149,7 +148,7 @@ function App() {
   useEffect(() => {
     handleTokenCheck();
   }, []);
-
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">

@@ -25,14 +25,14 @@ function Card({ card, onCardClick, onDeleteClick, onCardLike }) {
           className={`card__trash ${isOwn ? "card__trash_active" : ""}`}
           type="button"
           onClick={handleDeleteClick}
-        ></button>
+        />
       )}
       <img
         className="card__image"
         src={card.link}
         alt={card.name}
         onClick={handleClick}
-      ></img>
+      />
       <div className="card__box">
         <h2 className="card__title">{card.name}</h2>
         <div className="card__like-box">
@@ -40,7 +40,7 @@ function Card({ card, onCardClick, onDeleteClick, onCardLike }) {
             className={`card__like ${isLiked ? "card__like_active" : ""}`}
             type="button"
             onClick={handleLikeClick}
-          ></button>
+          />
           <p className="card__like-counter">{card.likes.length}</p>
         </div>
       </div>

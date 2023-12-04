@@ -50,7 +50,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         required
         value={name !== undefined ? name : ""}
         onChange={handleNameChange}
-      ></input>
+      />
       <span className="popup__input-error input-name-error"></span>
       <input
         className="popup__input"
@@ -63,8 +63,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         required
         value={job !== undefined ? job : ""}
         onChange={handleJobChange}
-      ></input>
-      <span className="popup__input-error input-job-error"></span>{" "}
+      />
+      <span className="popup__input-error input-job-error"/>{" "}
     </PopupWithForm>
   );
 }

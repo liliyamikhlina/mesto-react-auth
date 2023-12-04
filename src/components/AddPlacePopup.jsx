@@ -48,8 +48,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         required
         value={place}
         onChange={handlePlaceChange}
-      ></input>
-      <span className="popup__input-error input-place-error"></span>
+      />
+      <span className="popup__input-error input-place-error" />
       <input
         className="popup__input"
         id="input-link"
@@ -59,8 +59,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         required
         value={link}
         onChange={handleLinkChange}
-      ></input>
-      <span className="popup__input-error input-link-error"></span>{" "}
+      />
+      <span className="popup__input-error input-link-error" />{" "}
     </PopupWithForm>
   );
 }
